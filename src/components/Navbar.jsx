@@ -43,8 +43,8 @@ const itemVariants = {
         <div className="hidden md:flex items-center gap-6">
           <Link to="/" className={navLink}>Home</Link>
           <Link to="/about" className={navLink}>About Us</Link>
-          <Link to="/product" className={navLink}>Product</Link>
           <Link to="/menu" className={navLink}>Menu</Link>
+          <Link to="/product" className={navLink}>Product</Link>
           <Link to="/cart" className="relative">
             <ShoppingCart className="w-6 h-6 text-gray-800 hover:text-amber-600" />
             {totalItems > 0 && (
@@ -74,10 +74,10 @@ const itemVariants = {
               <Link to="/about" onClick={() => setIsOpen(false)} className={navLink}>About Us</Link>
             </motion.li>
             <motion.li variants={itemVariants}>
-              <Link to="/product" onClick={() => setIsOpen(false)} className={navLink}>Product</Link>
+              <Link to="/menu" onClick={() => setIsOpen(false)} className={navLink}>Menu</Link>
             </motion.li>
             <motion.li variants={itemVariants}>
-              <Link to="/menu" onClick={() => setIsOpen(false)} className={navLink}>Menu</Link>
+              <Link to="/product" onClick={() => setIsOpen(false)} className={navLink}>Product</Link>
             </motion.li>
             <motion.li variants={itemVariants} className="relative">
               <Link to="/cart" onClick={() => setIsOpen(false)} className={navLink}>
