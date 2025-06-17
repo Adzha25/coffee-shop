@@ -1,0 +1,41 @@
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
+import MenuPage from "./pages/MenuPage";
+import AboutPage from "./pages/AboutPage";
+import ProductPage from "./pages/ProductPage";
+import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import { AnimatePresence } from "framer-motion";
+import ScrollToTop from "./components/ScrollToTop";
+
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        {/* Halaman landing tanpa Navbar */}
+        <Route path="/" element={<LandingPage />} />
+
+        {/* Halaman lainnya dengan layout utama (Navbar) */}
+        <Route path="/menu" element={<MenuPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/product" element={<ProductPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+      </Routes>
+    </AnimatePresence>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <ScrollToTop />
+      <AnimatedRoutes />
+    </Router>
+  );
+}
+
+export default App;
