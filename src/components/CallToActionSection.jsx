@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const CallToActionSection = () => {
   return (
-    <motion.section className="h-screen flex items-center justify-center px-4">
+    <motion.section className="min-h-screen flex items-center justify-center px-4">
       <img src="/public/images/bgcall.jpg" alt="Call" className="absolute w-full h-full object-cover scale-101 z-0" />
         <div
           className="z-10 text-center max-w-xl"

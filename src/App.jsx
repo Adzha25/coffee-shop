@@ -4,6 +4,7 @@ import LandingPage from "./pages/LandingPage";
 import MenuPage from "./pages/MenuPage";
 import AboutPage from "./pages/AboutPage";
 import ProductPage from "./pages/ProductPage";
+import ServicePage from "./pages/ServicePage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import { AnimatePresence } from "framer-motion";
@@ -22,6 +23,7 @@ function AnimatedRoutes() {
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/product" element={<ProductPage />} />
+        <Route path="/service" element={<ServicePage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
       </Routes>

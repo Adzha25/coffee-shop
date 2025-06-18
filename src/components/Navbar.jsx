@@ -45,6 +45,7 @@ const itemVariants = {
           <Link to="/about" className={navLink}>About Us</Link>
           <Link to="/menu" className={navLink}>Menu</Link>
           <Link to="/product" className={navLink}>Product</Link>
+          <Link to="/service" className={navLink}>Service</Link>
           <Link to="/cart" className="relative">
             <ShoppingCart className="w-6 h-6 text-gray-800 hover:text-amber-600" />
             {totalItems > 0 && (
@@ -78,6 +79,9 @@ const itemVariants = {
             </motion.li>
             <motion.li variants={itemVariants}>
               <Link to="/product" onClick={() => setIsOpen(false)} className={navLink}>Product</Link>
+            </motion.li>
+            <motion.li variants={itemVariants}>
+              <Link to="/service" onClick={() => setIsOpen(false)} className={navLink}>Service</Link>
             </motion.li>
             <motion.li variants={itemVariants} className="relative">
               <Link to="/cart" onClick={() => setIsOpen(false)} className={navLink}>
