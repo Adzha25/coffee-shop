@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const AboutSection = () => {
   return (
-    <motion.section className="relative bg-gradient-to-br from-[#fdf6ec] via-[#f8e6cf] to-[#f5dbc3] min-h-screen w-full py-16 px-6 text-gray-800">
+    <motion.section className="relative bg-gradient-to-br from-[#fdf6ec] via-[#f8e6cf] to-[#f5dbc3] min-h-screen flex items-center justify-center px-6 text-gray-800">
       <div
         className="max-w-5xl mx-auto text-center justify-center"
         data-aos="fade-up"
