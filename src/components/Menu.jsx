@@ -4,9 +4,10 @@ import MenuItemCard from "../components/MenuItemCard";
 
 const Menu = () => {
   return (
-    <div className="p-4 max-w-6xl mx-auto">
+    <section className="bg-gradient-to-br from-[#fdf6ec] via-[#f8e6cf] to-[#f5dbc3] py-16">
+    <div className="px-4 max-w-6xl mx-auto">
       {/* Judul Halaman */}
-      <h1 className="text-3xl font-bold mb-8 text-center">Menu Kami</h1>
+      <h1 className="text-amber-700 text-3xl font-bold mb-8 text-center">Menu Kami</h1>
 
       {/* ===== Coffee Section ===== */}
       <section className="mb-10" data-aos="fade-up" data-aos-delay="100">
@@ -47,6 +48,7 @@ const Menu = () => {
         </div>
       </section>
     </div>
+    </section>
   );
 };
 

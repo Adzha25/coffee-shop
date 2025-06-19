@@ -45,7 +45,7 @@ const itemVariants = {
           <li><Link to="/service" className="hover:text-amber-500">Service</Link></li>
           <li><Link to="/menu" className="hover:text-amber-500">Menu</Link></li>
           <li><Link to="/product" className="hover:text-amber-500">Product</Link></li>
-          <li><a href="#contact" className="hover:text-amber-500">Contact Us</a></li>
+          <li><Link to="/contact" className="hover:text-amber-500">Contact Us</Link></li>
         </ul>
 
         {/* Mobile Menu Button */}
@@ -78,7 +78,7 @@ const itemVariants = {
             <motion.li variants={itemVariants}><Link to="/service" className="block">Service</Link></motion.li>
             <motion.li variants={itemVariants}><Link to="/menu" className="block">Menu</Link></motion.li>
             <motion.li variants={itemVariants}><Link to="/product" className="block">Product</Link></motion.li>
-            <motion.li variants={itemVariants}><a href="#contact" className="block">Contact Us</a></motion.li>
+            <motion.li variants={itemVariants}><Link to="/contact" className="block">Contact Us</Link></motion.li>
           </motion.ul>
         </motion.div>
       )}

@@ -2,7 +2,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import MainLayout from "../layouts/MainLayout";
 import Service from "../components/Service";
-import ServiceTypes from "../components/ServiceType";
 
 const ServicePage = () => {
   return (
@@ -14,7 +13,6 @@ const ServicePage = () => {
     >
       <MainLayout noPadding>
         <Service />
-        <ServiceTypes />
       </MainLayout>
     </motion.div>
   );

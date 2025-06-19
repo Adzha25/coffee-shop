@@ -10,7 +10,7 @@ const MenuPage = () => {
       exit={{ opacity: 0, y: -30 }}
       transition={{ duration: 0.4 }}
     >
-      <MainLayout>
+      <MainLayout noPadding>
         <Menu />
       </MainLayout>
     </motion.div>
