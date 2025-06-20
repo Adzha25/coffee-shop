@@ -8,6 +8,7 @@ import ServicePage from "./pages/ServicePage";
 import ContactPage from "./pages/ContactPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import OrderSuccess from "./components/OrderSuccess";
 import { AnimatePresence } from "framer-motion";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -28,6 +29,7 @@ function AnimatedRoutes() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/order-success" element={<OrderSuccess />} />
       </Routes>
     </AnimatePresence>
   );

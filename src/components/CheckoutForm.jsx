@@ -1,80 +1,119 @@
-import React, { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
 
 const CheckoutForm = () => {
-  const [form, setForm] = useState({
-    nama: "",
-    email: "",
-    alamat: "",
-    metodePembayaran: "tunai",
+  const { cartItems, totalPrice, clearCart } = useContext(CartContext);
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    customer_name: "",
+    customer_email: "",
+    customer_phone: "",
+    notes: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Data Pemesanan:", form);
-    alert("Pesanan berhasil dikirim!");
-    // Reset form atau redirect bisa ditambahkan di sini
+
+    const orderData = {
+      ...formData,
+      order_items: cartItems.map((item) => ({
+        product_id: item.id,
+        product_name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        subtotal: item.price * item.quantity,
+      })),
+      total_price: totalPrice,
+    };
+
+    try {
+      setLoading(true);
+      const res = await fetch("http://localhost:5000/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        clearCart();
+        setFormData({
+          customer_name: "",
+          customer_email: "",
+          customer_phone: "",
+          notes: "",
+        });
+        navigate("/order-success");
+      } else {
+        setMessage("❌ Gagal: " + result.error);
+      }
+    } catch (err) {
+      setMessage("❌ Terjadi error: " + err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="max-w-xl mx-auto bg-white p-8 rounded-lg shadow">
-      <h2 className="text-2xl font-bold mb-6 text-center">Checkout</h2>
+    <div className="max-w-xl mx-auto p-6 bg-white shadow-xl rounded-xl">
+      <h2 className="text-2xl font-bold mb-4 text-center">Form Pemesanan</h2>
+      {message && <div className="mb-4 text-center text-sm text-red-500">{message}</div>}
+
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block font-medium mb-1">Nama Lengkap</label>
-          <input
-            type="text"
-            name="nama"
-            value={form.nama}
-            onChange={handleChange}
-            className="w-full border px-4 py-2 rounded focus:outline-none focus:ring focus:border-amber-500"
-            required
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-1">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            className="w-full border px-4 py-2 rounded focus:outline-none focus:ring focus:border-amber-500"
-            required
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-1">Alamat Pengiriman</label>
-          <textarea
-            name="alamat"
-            value={form.alamat}
-            onChange={handleChange}
-            rows={3}
-            className="w-full border px-4 py-2 rounded focus:outline-none focus:ring focus:border-amber-500"
-            required
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-1">Metode Pembayaran</label>
-          <select
-            name="metodePembayaran"
-            value={form.metodePembayaran}
-            onChange={handleChange}
-            className="w-full border px-4 py-2 rounded focus:outline-none focus:ring focus:border-amber-500"
-          >
-            <option value="tunai">Tunai</option>
-            <option value="qris">QRIS</option>
-            <option value="transfer">Transfer Bank</option>
-          </select>
-        </div>
+        <input
+          type="text"
+          name="customer_name"
+          placeholder="Nama Lengkap"
+          value={formData.customer_name}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+        />
+        <input
+          type="email"
+          name="customer_email"
+          placeholder="Email"
+          value={formData.customer_email}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+        />
+        <input
+          type="tel"
+          name="customer_phone"
+          placeholder="Nomor Telepon"
+          value={formData.customer_phone}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+        />
+        <textarea
+          name="notes"
+          placeholder="Catatan tambahan (opsional)"
+          value={formData.notes}
+          onChange={handleChange}
+          rows="3"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+        ></textarea>
+
         <button
           type="submit"
-          className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-2 rounded-lg font-semibold transition"
+          disabled={loading}
+          className="w-full bg-amber-700 text-white py-2 rounded-lg hover:bg-amber-800 transition"
         >
-          Konfirmasi Pesanan
+          {loading ? "Mengirim..." : "Kirim Pesanan"}
         </button>
       </form>
     </div>
