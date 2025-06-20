@@ -91,7 +91,7 @@ const itemVariants = {
               <Link to="/cart" onClick={() => setIsOpen(false)} className={navLink}>
                 <ShoppingCart className="w-6 h-6 text-gray-800 hover:text-amber-600" />
                 {totalItems > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded-full">
                     {totalItems}
                   </span>
                 )}
