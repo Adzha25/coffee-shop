@@ -4,13 +4,13 @@ import CartItem from "./CartItem";
 import { Link } from "react-router-dom";
 
 const Cart = () => {
-  const { cartItems, removeFromCart, getTotalPrice } = useContext(CartContext);
+  const { cartItems, removeFromCart, totalPrice } = useContext(CartContext);
 
   const handleRemove = (id) => {
     removeFromCart(id);
   };
 
-  const total = getTotalPrice();
+  const total = totalPrice;
 
   return (
     <div className="max-w-3xl mx-auto p-4">
