@@ -1,6 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const verifyToken = require('../middleware/verifyToken');
 const Order = require('../models/Order');
+
+// Verify Token
+router.get('/', verifyToken, async (req, res) => {
+  const orders = await Order.find();
+  res.json(orders);
+});
 
 // GET semua order
 router.get('/', async (req, res) => {
