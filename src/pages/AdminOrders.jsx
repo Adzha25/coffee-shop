@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import AdminLayout from '../components/AdminSidebarLayout';
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -9,6 +11,13 @@ const AdminOrders = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [dateFilter, setDateFilter] = useState({ start: '', end: '' });
 
+  useEffect(() => {
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+      navigate('/admin/login');
+    }
+  }, []);
+  
   useEffect(() => {
     axios.get('http://localhost:5000/api/orders')
       .then(res => {
@@ -93,117 +102,119 @@ const AdminOrders = () => {
     .reduce((sum, o) => sum + o.total_price, 0);
 
   return (
-    <div className="min-h-screen bg-white py-10 px-6">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-        <h1 className="text-3xl font-bold text-gray-800">📋 Daftar Pesanan</h1>
-        <div className="flex gap-3 flex-wrap">
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="border rounded px-3 py-1 text-sm"
-          >
-            <option value="all">🔄 Semua Status</option>
-            <option value="pending">🕒 Pending</option>
-            <option value="confirmed">✅ Confirmed</option>
-          </select>
-          <input
-            type="date"
-            value={dateFilter.start}
-            onChange={(e) => setDateFilter({ ...dateFilter, start: e.target.value })}
-            className="border rounded px-3 py-1 text-sm"
-          />
-          <input
-            type="date"
-            value={dateFilter.end}
-            onChange={(e) => setDateFilter({ ...dateFilter, end: e.target.value })}
-            className="border rounded px-3 py-1 text-sm"
-          />
-          <button
-            onClick={exportToExcel}
-            className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded shadow"
-          >
-            📤 Export Excel
-          </button>
+    <AdminLayout>
+      <div className="min-h-screen bg-white py-10 px-6">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+          <h1 className="text-3xl font-bold text-gray-800">📋 Daftar Pesanan</h1>
+          <div className="flex gap-3 flex-wrap">
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="border rounded px-3 py-1 text-sm"
+            >
+              <option value="all">🔄 Semua Status</option>
+              <option value="pending">🕒 Pending</option>
+              <option value="confirmed">✅ Confirmed</option>
+            </select>
+            <input
+              type="date"
+              value={dateFilter.start}
+              onChange={(e) => setDateFilter({ ...dateFilter, start: e.target.value })}
+              className="border rounded px-3 py-1 text-sm"
+            />
+            <input
+              type="date"
+              value={dateFilter.end}
+              onChange={(e) => setDateFilter({ ...dateFilter, end: e.target.value })}
+              className="border rounded px-3 py-1 text-sm"
+            />
+            <button
+              onClick={exportToExcel}
+              className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded shadow"
+            >
+              📤 Export Excel
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div className="grid md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-yellow-100 p-4 rounded shadow">
-          <h2 className="text-lg font-semibold">💰 Total Penjualan</h2>
-          <p className="text-xl font-bold text-green-700">Rp {total.toLocaleString()}</p>
+        <div className="grid md:grid-cols-3 gap-4 mb-6">
+          <div className="bg-yellow-100 p-4 rounded shadow">
+            <h2 className="text-lg font-semibold">💰 Total Penjualan</h2>
+            <p className="text-xl font-bold text-green-700">Rp {total.toLocaleString()}</p>
+          </div>
+          <div className="bg-blue-100 p-4 rounded shadow">
+            <h2 className="text-lg font-semibold">📆 Hari Ini</h2>
+            <p className="text-xl font-bold text-blue-700">Rp {daily.toLocaleString()}</p>
+          </div>
+          <div className="bg-purple-100 p-4 rounded shadow">
+            <h2 className="text-lg font-semibold">📅 Bulan Ini / Tahun Ini</h2>
+            <p className="text-sm text-gray-600">Bulan: Rp {monthly.toLocaleString()}</p>
+            <p className="text-sm text-gray-600">Tahun: Rp {yearly.toLocaleString()}</p>
+          </div>
         </div>
-        <div className="bg-blue-100 p-4 rounded shadow">
-          <h2 className="text-lg font-semibold">📆 Hari Ini</h2>
-          <p className="text-xl font-bold text-blue-700">Rp {daily.toLocaleString()}</p>
-        </div>
-        <div className="bg-purple-100 p-4 rounded shadow">
-          <h2 className="text-lg font-semibold">📅 Bulan Ini / Tahun Ini</h2>
-          <p className="text-sm text-gray-600">Bulan: Rp {monthly.toLocaleString()}</p>
-          <p className="text-sm text-gray-600">Tahun: Rp {yearly.toLocaleString()}</p>
-        </div>
-      </div>
 
-      <div className="overflow-x-auto border rounded shadow">
-        <table className="min-w-full text-sm text-gray-700">
-          <thead className="bg-yellow-100 text-gray-800 font-semibold">
-            <tr>
-              <th className="p-4">Nama</th>
-              <th className="p-4">Produk</th>
-              <th className="p-4">Total</th>
-              <th className="p-4">Status</th>
-              <th className="p-4">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.length === 0 ? (
+        <div className="overflow-x-auto border rounded shadow">
+          <table className="min-w-full text-sm text-gray-700">
+            <thead className="bg-yellow-100 text-gray-800 font-semibold">
               <tr>
-                <td colSpan="5" className="p-4 text-center text-gray-500">Tidak ada pesanan</td>
+                <th className="p-4">Nama</th>
+                <th className="p-4">Produk</th>
+                <th className="p-4">Total</th>
+                <th className="p-4">Status</th>
+                <th className="p-4">Aksi</th>
               </tr>
-            ) : (
-              filtered.map((order, i) => (
-                <tr key={i} className="border-b hover:bg-gray-50 transition">
-                  <td className="p-4">
-                    <div className="font-medium">{order.customer_name}</div>
-                    <div className="text-xs text-gray-500">{order.customer_email}</div>
-                  </td>
-                  <td className="p-4">
-                    <ul className="list-disc list-inside">
-                      {order.order_items.map((item, idx) => (
-                        <li key={idx}>{item.product_name} × {item.quantity}</li>
-                      ))}
-                    </ul>
-                  </td>
-                  <td className="p-4 font-semibold text-green-600">Rp {order.total_price}</td>
-                  <td className="p-4 capitalize">
-                    <span className={`px-2 py-1 rounded text-xs font-bold ${
-                      order.order_status === 'pending'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-green-100 text-green-800'
-                    }`}>
-                      {order.order_status}
-                    </span>
-                  </td>
-                  <td className="p-4 space-x-2">
-                    <button
-                      onClick={() => handleUpdate(order._id)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded"
-                    >
-                      Ubah Status
-                    </button>
-                    <button
-                      onClick={() => handleDelete(order._id)}
-                      className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded"
-                    >
-                      Hapus
-                    </button>
-                  </td>
+            </thead>
+            <tbody>
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan="5" className="p-4 text-center text-gray-500">Tidak ada pesanan</td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                filtered.map((order, i) => (
+                  <tr key={i} className="border-b hover:bg-gray-50 transition">
+                    <td className="p-4">
+                      <div className="font-medium">{order.customer_name}</div>
+                      <div className="text-xs text-gray-500">{order.customer_email}</div>
+                    </td>
+                    <td className="p-4">
+                      <ul className="list-disc list-inside">
+                        {order.order_items.map((item, idx) => (
+                          <li key={idx}>{item.product_name} × {item.quantity}</li>
+                        ))}
+                      </ul>
+                    </td>
+                    <td className="p-4 font-semibold text-green-600">Rp {order.total_price}</td>
+                    <td className="p-4 capitalize">
+                      <span className={`px-2 py-1 rounded text-xs font-bold ${
+                        order.order_status === 'pending'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : 'bg-green-100 text-green-800'
+                      }`}>
+                        {order.order_status}
+                      </span>
+                    </td>
+                    <td className="p-4 space-x-2">
+                      <button
+                        onClick={() => handleUpdate(order._id)}
+                        className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded"
+                      >
+                        Ubah Status
+                      </button>
+                      <button
+                        onClick={() => handleDelete(order._id)}
+                        className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded"
+                      >
+                        Hapus
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 

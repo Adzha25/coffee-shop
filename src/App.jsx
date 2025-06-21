@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import LoginAdmin from './pages/LoginAdmin';
 import LandingPage from "./pages/LandingPage";
 import MenuPage from "./pages/MenuPage";
 import AboutPage from "./pages/AboutPage";
@@ -10,6 +11,7 @@ import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderSuccess from "./components/OrderSuccess";
 import AdminOrders from "./pages/AdminOrders";
+import AdminDashboard from './pages/AdminDashboard';
 import { AnimatePresence } from "framer-motion";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -19,6 +21,9 @@ function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
+        <Route path="/admin/login" element={<LoginAdmin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/orders" element={<AdminOrders />} />
         {/* Halaman landing tanpa Navbar */}
         <Route path="/" element={<LandingPage />} />
 
@@ -30,7 +35,6 @@ function AnimatedRoutes() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/admin/orders" element={<AdminOrders />} />
         <Route path="/order-success" element={<OrderSuccess />} />
       </Routes>
     </AnimatePresence>
