@@ -15,16 +15,26 @@ const AdminOrders = () => {
     const token = localStorage.getItem('adminToken');
     if (!token) {
       navigate('/admin/login');
+      return;
     }
-  }, []);
-  
-  useEffect(() => {
-    axios.get('http://localhost:5000/api/orders')
-      .then(res => {
-        setOrders(res.data);
-        setFiltered(res.data);
-      })
-      .catch(err => console.error('Gagal ambil data:', err));
+
+    axios.get('http://localhost:5000/api/orders', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then(res => {
+      setOrders(res.data);
+      setFiltered(res.data);
+    })
+    .catch(err => {
+      console.error('Gagal ambil data:', err);
+      if (err.response?.status === 401) {
+        alert('Sesi login berakhir, silakan login kembali');
+        localStorage.removeItem('adminToken');
+        navigate('/admin/login');
+      }
+    });
   }, []);
 
   useEffect(() => {
