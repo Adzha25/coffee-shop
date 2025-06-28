@@ -14,7 +14,7 @@ const LoginAdmin = () => {
     setError('');
 
     try {
-      const res = await axios.post('${import.meta.env.VITE_API_BASE_URL}/api/admin/login', {
+      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/admin/login`, {
         email,
         password,
       });
