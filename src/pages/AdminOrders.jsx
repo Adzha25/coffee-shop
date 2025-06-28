@@ -18,7 +18,7 @@ const AdminOrders = () => {
       return;
     }
 
-    axios.get('http://localhost:5000/api/orders', {
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/orders`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -55,7 +55,7 @@ const AdminOrders = () => {
 
   const handleUpdate = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/api/orders/${id}`, {
+      await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/orders/${id}`, {
         order_status: 'confirmed',
       });
       alert('Status diubah!');
@@ -68,7 +68,7 @@ const AdminOrders = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/orders/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/orders/${id}`);
       alert('Pesanan dihapus!');
       window.location.reload();
     } catch (err) {

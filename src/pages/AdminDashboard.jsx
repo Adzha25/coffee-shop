@@ -17,13 +17,13 @@ const AdminDashboard = () => {
     const token = localStorage.getItem('adminToken');
     const headers = { headers: { Authorization: `Bearer ${token}` } };
 
-    axios.get('http://localhost:5000/api/orders', headers)
+    axios.get('${import.meta.env.VITE_API_BASE_URL}/api/orders', headers)
       .then(res => {
         setOrders(res.data);
         processSalesData(res.data);
       });
 
-    axios.get('http://localhost:5000/api/products', headers)
+    axios.get('${import.meta.env.VITE_API_BASE_URL}/api/products', headers)
       .then(res => setProducts(res.data));
   }, []);
 
