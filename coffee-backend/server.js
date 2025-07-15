@@ -39,6 +39,16 @@ app.use((req, res, next) => {
   next();
 });
 
+const path = require('path');
+
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, '../coffee-frontend/dist')));
+
+// Fallback route untuk React Router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../coffee-frontend/dist/index.html'));
+});
+
 
 // Port
 const PORT = process.env.PORT || 5000;
